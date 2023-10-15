@@ -1,51 +1,65 @@
+const roundResult = document.getElementById('round-result');
+const result = document.getElementById('result');
+const score = document.getElementById('score');
+
+let computerScore = 0;
+let playerScore = 0;
+let round = 0;
+
+
 function getComputerChoice() {
     const choices = ['rock','paper','scissors'];
     return choices[Math.random() * choices.length>>0];
 }
 
-function game() {
-    let playerScore = 0;
-    let computerScore = 0;
-    for (let i = 0; i < 5; i++) {
-        let playerSelection;
-        let computerSelection;
-        function playRound(playerSelection, computerSelection) {
-            playerSelection = prompt('Choose between rock, paper and scissors.').toLowerCase();
-            computerSelection = getComputerChoice();
-            if (playerSelection == 'paper' && computerSelection == 'rock') {
-                playerScore++;
-                console.log('You Win! Paper beats Rock');
-                console.log('Player - ' + playerScore + ' && ' + computerScore + ' - Computer')
-                return computerScore, playerScore;
-            } else if (playerSelection == 'scissors' && computerSelection == 'paper') {
-                playerScore++;
-                console.log('You Win! Scissors beats Paper');
-                console.log('Player - ' + playerScore + ' && ' + computerScore + ' - Computer')
-                return computerScore, playerScore;
-            } else if (playerSelection == 'rock' && computerSelection == 'scissors') {
-                playerScore++;
-                console.log('You Win! Rock beats scissors');
-                console.log('Player - ' + playerScore + ' && ' + computerScore + ' - Computer')
-                return computerScore, playerScore;
-            } else if (playerSelection == computerSelection) {
-                console.log('Its a Tie!');
-                console.log('Player - ' + playerScore + ' && ' + computerScore + ' - Computer')
-                return computerScore, playerScore;
-            } else {
-                computerScore++;
-                console.log('You Lose! ' + computerSelection + ' beats ' + playerSelection);
-                console.log('Player - ' + playerScore + ' && ' + computerScore + ' - Computer')
-                return computerScore, playerScore;
-            }
-        }
-        playRound(playerSelection, computerSelection);
+
+function playRound(playerSelection) {
+    let computerSelection = getComputerChoice();
+    if (playerSelection == 'paper' && computerSelection == 'rock') {
+        playerScore++;
+        roundResult.textContent = 'You Win! Paper beats Rock';
+    } 
+    else if (playerSelection == 'scissors' && computerSelection == 'paper') {
+        playerScore++;
+        roundResult.textContent = 'You Win! Scissors beats Paper';
+    } 
+    else if (playerSelection == 'rock' && computerSelection == 'scissors') {
+        playerScore++;
+        roundResult.textContent = 'You Win! Rock beats scissors';
+    } 
+    else if (playerSelection == computerSelection) {
+        playerScore++;
+        computerScore++;
+        roundResult.textContent = 'Its a Tie!';
+    } 
+    else {
+        computerScore++;
+        roundResult.textContent = 'You Lose! ' + computerSelection + ' beats ' + playerSelection;
     }
-    if (playerScore > computerScore) {
-        return console.log('You won! Congratulations')
-    } else if (playerScore == computerScore) {
-        return console.log('You tied the game! Try again next time')
-    } else {
-        return console.log('You lost! Try again next time')
+    score.textContent = 'Player - ' + playerScore + ' && ' + computerScore + ' - Computer';
+    
+
+    if (round !== 4) {
+        result.textContent = '';
+        return round++, roundResult, score, computerScore, playerScore;
+    }
+    else {
+        round = 0;
+        if (playerScore > computerScore) {
+            playerScore = 0;
+            computerScore = 0;
+            return result.textContent = 'You won the game! Congratulations';
+        }
+        else if (playerScore == computerScore) {
+            playerScore = 0;
+            computerScore = 0;
+            return result.textContent = 'You tied the game! Click again to keep playing';
+        }
+        else {
+            playerScore = 0;
+            computerScore = 0;
+            return result.textContent = 'You lost the game! Try again next time';
+        }
     }
 }
-game();
+
